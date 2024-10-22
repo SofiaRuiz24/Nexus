@@ -33,7 +33,7 @@ app.get("/",(req,res)=>{
     res.status(200) 
     .json({
         status:200, 
-        message:"Ed Roh Admin Dashboard API in Node JS and Express 🤷‍♂️",
+        message:"Nexus Hub Dashboard",
         dashboard:"https://admin-frontend-02yo.onrender.com/",
         api_documentation: "https://documenter.getpostman.com/view/21884902/2s935soMqx"
     })
