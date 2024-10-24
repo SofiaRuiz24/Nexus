@@ -6,7 +6,7 @@ import BreakdownChart from 'components/BreakdownChart'
 const Breakdown = () =>{
     return(
         <Box m="1.5rem 2.5rem">
-            <Header title="BREAKDOWN" subtitle="Break down of sales by category" />
+            <Header title="DESGLOSE" subtitle="Desglose de ventas por categoría" />
             <Box mt="40px" height="75vh">
                 <BreakdownChart/>
             </Box>

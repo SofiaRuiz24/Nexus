@@ -38,7 +38,7 @@ const Navbar = ({
                         borderRadius="9px"
                         gap="3rem"
                         p="0.1rem 1.5rem">
-                        <InputBase placeholder="search ..."/>
+                        <InputBase placeholder="Buscar..."/>
                         <IconButton>
                             <Search/>
                         </IconButton>
@@ -77,7 +77,7 @@ const Navbar = ({
                         </Button>
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{ vertical:"bottom", horizontal:"center" }}>
                             <MenuItem onClick={handleClose}>
-                                Log Out
+                                Cerrar sesión
                             </MenuItem>
                         </Menu>
                     </FlexBetween>

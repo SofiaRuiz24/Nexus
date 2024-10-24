@@ -35,59 +35,66 @@ import ProfileImage from 'assets/profile.jpeg'
 
 const navItems =[
     {
-        text:"Dashboard",
+        text:"Panel principal",
+        redirection: "dashboard", //Key para redirigir
         icon:<HomeOutlined/>
     },
     {
-        text:"Client Facing",
-        icon:null
-    },
-    {
-        text:"Products",
+        text:"Productos",
+        redirection: "products",
         icon:<ShoppingCartOutlined/>
     },
     {
-        text:"Customers",
+        text:"Clientes",
+        redirection: "customers",
         icon:<Groups2Outlined/>
     },
     {
-        text:"Transactions",
+        text:"Transacciones",
+        redirection: "transactions",
         icon:<ReceiptLongOutlined/>
     },
     {
-        text:"Geography",
+        text:"Geografía",
+        redirection: "geography",
         icon:<PublicOutlined/>
     },
     {
-        text:"Sales",
+        text:"Ventas",
         icon:null
     },
     {
-        text:"Overview",
+        text:"Vista general",
+        redirection: "overview",
         icon:<PointOfSaleOutlined/>
     },
     {
-        text:"Daily",
+        text:"Diaramente",
+        redirection: "daily",
         icon:<TodayOutlined/>
     },
     {
-        text:"Monthly",
+        text:"Mensualmente",
+        redirection: "monthly",
         icon:<CalendarMonthOutlined/>
     },
     {
-        text:"Breakdown",
+        text:"Desglose",
+        redirection: "breakdown",
         icon:<PieChartOutlined/>
     },
     {
-        text:"Management",
+        text:"Administración",
         icon:null
     },
     {
         text:"Admin",
+        redirection: "Admin",
         icon:<AdminPanelSettingsOutlined/>
     },
     {
-        text:"Performance",
+        text:"Rendimiento",
+        redirection: "performance",
         icon:<TrendingUpOutlined/>
     }
 ]
@@ -133,7 +140,7 @@ const Sidebar = ({
                     <FlexBetween color={theme.palette.secondary.main}>
                         <Box display="flex" alignItems="center" gap="0.5rem">
                             <Typography variant="h4" fontWeight="bold">
-                                ECOMVISION
+                                NEXUS HUB
                             </Typography>
                         </Box>
                         {!isNonMobile && (
@@ -146,7 +153,7 @@ const Sidebar = ({
                 </Box>
                 <List>
                     {
-                        navItems.map(({text,icon}) =>{
+                        navItems.map(({text, redirection, icon}) =>{
                             if(!icon){
                                 return(
                                     <Typography key={text} sx={{ m:"2.25rem 0 1rem 3rem" }}>
@@ -154,7 +161,7 @@ const Sidebar = ({
                                     </Typography>
                                 )
                             }
-                            const lcText= text.toLowerCase()
+                            const lcText= redirection.toLowerCase()
 
                             return (
                                 <ListItem key={text} disablePadding>

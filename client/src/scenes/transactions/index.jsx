@@ -30,24 +30,24 @@ const Transactions = () =>{
         },
         {
             field:"userId",
-            headerName:"User ID",
+            headerName:"ID de Usuario",
             flex:1
         },
         {
             field:"createdAt",
-            headerName:"Created At",
+            headerName:"Creado en",
             flex:1
         },
         {
             field:"products",
-            headerName:"# of Products",
+            headerName:"# de Productos",
             flex:0.5,
             sortable:false,
             renderCell: (params) => params.value.length
         },
         {
             field:"cost",
-            headerName:"Cost",
+            headerName:"Precio",
             flex:1,
             sortable:false,
             renderCell: (params) => `$${Number(params.value).toFixed(2)}`
@@ -56,7 +56,7 @@ const Transactions = () =>{
 
     return(
         <Box m="1.5rem 2.5rem">
-        <Header title="TRANSACTIONS" subtitle="List of all transactions"/>
+        <Header title="TRANSACCIONES" subtitle="Lista de transacciones"/>
             <Box
                 mt="40px"
                 height="80vh"
