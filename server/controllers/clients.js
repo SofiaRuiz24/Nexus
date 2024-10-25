@@ -73,9 +73,9 @@ export const getProducts = async(req,res) =>{
 // Crear usuario
 export const createUser = async (req, res) => {
     try {
-        const { name, email, password, city, state, country, occupation, phoneNumber, transactions, role } = req.body;
+        const { name, email, password, city, state, country, occupation, phoneNumber, role } = req.body;
         const newUser = new User({
-            name, email, password, city, state, country, occupation, phoneNumber, transactions, role
+            name, email, password, city, state, country, occupation, phoneNumber, role
         });
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);
