@@ -15,7 +15,7 @@ const Customers = () =>{
         },
         {
             field:"name",
-            headerName:"Name",
+            headerName:"Nombre",
             flex:0.5
         },
         {
@@ -25,7 +25,7 @@ const Customers = () =>{
         },
         {
             field:"phoneNumber",
-            headerName:"Phone",
+            headerName:"Teléfono",
             flex:0.5,
             renderCell:(params) =>{
                 return params.value.replace(/^(\d{3})(\d{3})(\d{4})/,"($1)$2-$3")
@@ -33,23 +33,23 @@ const Customers = () =>{
         },
         {
             field:"country",
-            headerName:"Country",
+            headerName:"País",
             flex:0.4
         },
         {
             field:"occupation",
-            headerName:"Occupation",
+            headerName:"Profesión",
             flex:1
         },
         {
             field:"role",
-            headerName:"Role",
+            headerName:"Rol",
             flex:0.5
         },
     ]
     return(
         <Box m="1.5rem 2.5rem">
-            <Header title="CUSTOMERS" subtitle="List of customers"/>
+            <Header title="CLIENTES" subtitle="Lista de clientes"/>
             <Box
                mt="40px"
                height="75vh"

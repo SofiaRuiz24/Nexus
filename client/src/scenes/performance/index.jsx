@@ -18,33 +18,33 @@ const Performance = () => {
             flex: 1
         },
         {
-            field: "userId",
-            headerName: "User ID",
-            flex: 0.5
+            field:"userId",
+            headerName:"ID de usuario",
+            flex:0.5
         },
         {
-            field: "createdAt",
-            headerName: "created At",
-            flex: 1
+            field:"createdAt",
+            headerName:"Creado en",
+            flex:1
         },
         {
-            field: "products",
-            headerName: "# of products",
-            flex: 0.5,
+            field:"products",
+            headerName:"# de Productos",
+            flex:0.5,
             sortable: false,
             renderCell: (params) => params.value.length
         },
         {
-            field: "cost",
-            headerName: "cost",
-            flex: 1,
-            renderCell: (params) => `$${Number(params.value).toFixed(2)}`
+            field:"cost",
+            headerName:"Precio",
+            flex:1,
+            renderCell:(params) => `$${Number(params.value).toFixed(2)}`
         },
     ]
 
     return (
         <Box m="1.5rem 2.5rem">
-            <Header title="Performance" subtitle="Track your affiliate performance here" />
+            <Header title="RENDIMIENTO" subtitle="Siga su rendimiento"/>
             <Box
                 mt="40px"
                 height="75vh"

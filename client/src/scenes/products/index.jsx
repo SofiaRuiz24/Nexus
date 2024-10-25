@@ -78,7 +78,7 @@ const Products = () => {
 
     return (
         <Box m="1.5rem 2.5rem">
-            <Header title='PRODUCTS' subtitle='List of all products' />
+            <Header title='PRODUCTOS' subtitle='Lista de todos los productos'/>
             {
                 data || !isLoading ? (
                     <Box
