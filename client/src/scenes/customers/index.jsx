@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useGetCustomersQuery } from "state/api";
 import Header from "components/Header";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteCustomer, postCustomer } from "lib/apiRequests";
 
 const Customers = () => {
   const theme = useTheme();
@@ -26,26 +27,33 @@ const Customers = () => {
     setNewCustomer((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddCustomer = () => {
+  const handleAddCustomer = async() => {
     console.log("Nuevo cliente:", newCustomer);
-    // Aquí puedes hacer una petición para enviar los datos a tu backend
-    // Ejemplo: await addCustomer(newCustomer);
-    setNewCustomer({
-      name: "",
-      password: "",
-      email: "",
-      city: "",
-      state: "",
-      country: "",
-      occupation: "",
-      phoneNumber: "",
-      role: "user",
-    });
+    const response = await postCustomer(newCustomer);
+    if(response.status === 201){
+      setNewCustomer({
+        name: "",
+        password: "",
+        email: "",
+        city: "",
+        state: "",
+        country: "",
+        occupation: "",
+        phoneNumber: "",
+        role: "user",
+      });
+      refetch();
+    } else {
+      throw new Error("Error al crear customer")
+    }
   };
 
-  const handleDeleteCustomer = (id) => {
+  const handleDeleteCustomer = async(id) => {
     // Aquí puedes hacer una petición para eliminar al cliente del backend
-    console.log("Eliminando cliente con ID:", id);
+    const response = await deleteCustomer(id);
+
+    console.log(response)
+    if(response.status !== 200) throw new Error("Error al borrar customer")
     // Después de eliminar, puedes volver a obtener la lista de clientes
     refetch(); // Si tu query está configurado para volver a obtener datos
   };

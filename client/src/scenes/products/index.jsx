@@ -17,6 +17,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import Header from 'components/Header';
 import Loader from 'loader/Loader';
+import { deleteProduct, postProduct } from "../../lib/apiRequests"
 
 const Product = ({
     _id,
@@ -78,7 +79,7 @@ const Product = ({
 };
 
 const Products = () => {
-    const { data, isLoading, error } = useGetProductsQuery();
+    const { data, isLoading, error, refetch } = useGetProductsQuery();
     const isNonMobile = useMediaQuery('(min-width:1000px)');
     const [products, setProducts] = useState(data || []);
     const [newProduct, setNewProduct] = useState({
@@ -94,7 +95,7 @@ const Products = () => {
         setNewProduct({ ...newProduct, [name]: value });
     };
 
-    const handleAddProduct = () => {
+    const handleAddProduct = async () => {
         const productToAdd = {
             ...newProduct,
             _id: products.length + 1,
@@ -107,12 +108,25 @@ const Products = () => {
                 yearlyTotalSoldUnits: 0
             }
         };
-        setProducts([...products, productToAdd]);
         setNewProduct({ name: '', price: '', description: '', rating: '', supply: '' });
+        const response = await postProduct(newProduct)
+        if(response.status === 201){
+            setProducts([...products, productToAdd]);
+            refetch();
+        } else {
+            throw new Error("Error creando nuevo producto")
+        }
     };
 
-    const handleDeleteProduct = (id) => {
-        setProducts(products.filter((product) => product._id !== id));
+    const handleDeleteProduct = async(id) => {
+        const response = await deleteProduct(id);
+        console.log(response)
+        if(response.status === 200){
+            setProducts(products.filter((product) => product._id !== id));
+            refetch();
+        } else {
+            throw new Error("Error borrando producto")
+        }
     };
 
     return (
@@ -179,7 +193,7 @@ const Products = () => {
                     }}
                 >
                     {products.map((product) => (
-                        <Product key={product._id} {...product} onDelete={handleDeleteProduct} />
+                        <Product key={product._id} {...product} onDelete={() => {handleDeleteProduct(product._id)}} />
                     ))}
                 </Box>
             )}

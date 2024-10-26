@@ -5,6 +5,7 @@ import { useGetTransactionsQuery } from 'state/api';
 import Header from 'components/Header';
 import DataGridCustomToolbar from 'components/DataGridCustomToolbar';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteTransaction, postTransaction } from 'lib/apiRequests';
 
 const Transactions = () => {
   const theme = useTheme();
@@ -16,7 +17,7 @@ const Transactions = () => {
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
 
-  const { data, isLoading } = useGetTransactionsQuery({
+  const { data, isLoading, refetch } = useGetTransactionsQuery({
     page,
     pageSize,
     sort: JSON.stringify(sort),
@@ -34,19 +35,26 @@ const Transactions = () => {
     setNewTransaction((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddTransaction = () => {
+  const handleAddTransaction = async() => {
     console.log('Nueva transacción:', newTransaction);
+    const response = await postTransaction(newTransaction);
     // Aquí puedes enviar los datos al backend para agregar la transacción.
-    setNewTransaction({
-      userId: '',
-      cost: '',
-      products: '',
-    });
+    if(response.status === 201){
+      setNewTransaction({
+        userId: '',
+        cost: '',
+        products: '',
+      });
+      refetch();
+    } else {
+      throw new Error("Error al crear transacción")
+    }
   };
 
-  const handleDeleteTransaction = (id) => {
-    console.log('Eliminar transacción con ID:', id);
-    // Aquí puedes enviar la solicitud al backend para eliminar la transacción.
+  const handleDeleteTransaction = async(id) => {
+    const response = await deleteTransaction(id);
+    if(response.status !== 200) throw new Error("Error al borrar customer")
+    refetch();
   };
 
   const columns = [
@@ -75,7 +83,7 @@ const Transactions = () => {
         <Button
           variant="outlined"
           color="error"
-          onClick={() => {handleDeleteTransaction()}}
+          onClick={() => {handleDeleteTransaction(params.id)}}
         >
           <DeleteIcon/>
         </Button>
