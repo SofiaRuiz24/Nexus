@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetProductsQuery } from 'state/api';
 import {
     Box,
@@ -90,6 +90,10 @@ const Products = () => {
         supply: ''
     });
 
+    useEffect(() => {
+        refetch();
+    }, [refetch])
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewProduct({ ...newProduct, [name]: value });
@@ -120,7 +124,6 @@ const Products = () => {
 
     const handleDeleteProduct = async(id) => {
         const response = await deleteProduct(id);
-        console.log(response)
         if(response.status === 200){
             setProducts(products.filter((product) => product._id !== id));
             refetch();

@@ -36,7 +36,6 @@ const Transactions = () => {
   };
 
   const handleAddTransaction = async() => {
-    console.log('Nueva transacción:', newTransaction);
     const response = await postTransaction(newTransaction);
     // Aquí puedes enviar los datos al backend para agregar la transacción.
     if(response.status === 201){
