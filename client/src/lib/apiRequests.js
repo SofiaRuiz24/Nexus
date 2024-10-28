@@ -60,6 +60,27 @@ export async function postCustomer(customer) {
   }
 }
 
+export async function searchUser(user_email) {
+  try {
+    const response = await fetch(`http://localhost:5000/client/searchUser/${user_email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json", 
+      },
+    });
+    console.log(response)
+    if (!response.ok) {
+      return{status: 500}
+    }
+
+    const data = await response.json(); 
+    return {data, status: 201};
+  } catch (e) {
+    console.error("Error al crear el usuario:", e);
+    return{status: 500}
+  }
+}
+
 export async function deleteCustomer(customer_id) {
   try {
     const response = await fetch(`http://localhost:5000/client/users/${customer_id}`, {

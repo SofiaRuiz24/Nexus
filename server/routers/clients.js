@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router()
-import { createUser, deleteUser, getCustomers,createProduct, deleteProduct, getProducts,createTransaction, deleteTransaction, getTransactions ,getGeography,getCustomersSHORT, getProductsSHORT, getTransactionsSHORT } from '../controllers/clients.js'
+import { createUser, deleteUser, getCustomers,createProduct, deleteProduct, getProducts,createTransaction, deleteTransaction, getTransactions ,getGeography,getCustomersSHORT, getProductsSHORT, getTransactionsSHORT, searchUser } from '../controllers/clients.js'
 
 router.get('/geography',getGeography)
 
@@ -9,6 +9,7 @@ router.get('/geography',getGeography)
 // ==========================
 // Crear usuario
 router.post('/users', createUser);
+router.get("/searchUser/:email", searchUser);
 // Obtener usuarios (solo con rol "user")
 router.get('/customers', getCustomers);
 router.get('/customersSHORT', getCustomersSHORT);

@@ -84,6 +84,27 @@ export const createUser = async (req, res) => {
     }
 };
 
+export const searchUser = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!email) {
+            return res.status(400).json({ message: 'El email es requerido.' });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 // Obtener usuarios (solo con rol "user")
 export const getCustomersSHORT = async (req, res) => {
     try {

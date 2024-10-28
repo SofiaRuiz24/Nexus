@@ -13,6 +13,17 @@ export const getUser = async(req,res) =>{
     }
 }
 
+export const getUserByEmail = async(req,res) =>{
+    try{
+        const { email } = req.params
+        const user = await User.findOne({"email": email})
+        res.status(200).json(user)
+    }
+    catch(error){
+        return res.status(404).json({message: error.message})
+    }
+}
+
 export const getDashboardStats = async(req,res) =>{
     try{
         const currentMonth = "November"

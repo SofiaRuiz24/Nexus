@@ -91,11 +91,6 @@ const navItems =[
         text:"Admin",
         redirection: "Admin",
         icon:<AdminPanelSettingsOutlined/>
-    },
-    {
-        text:"Rendimiento",
-        redirection: "performance",
-        icon:<TrendingUpOutlined/>
     }
 ]
 
