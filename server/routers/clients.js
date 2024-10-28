@@ -9,12 +9,9 @@ router.get('/geography',getGeography)
 // ==========================
 // Crear usuario
 router.post('/users', createUser);
-
 // Obtener usuarios (solo con rol "user")
 router.get('/customers', getCustomers);
 router.get('/customersSHORT', getCustomersSHORT);
-
-
 // Eliminar usuario por ID
 router.delete('/users/:id', deleteUser);
 
@@ -23,11 +20,9 @@ router.delete('/users/:id', deleteUser);
 // ==========================
 // Crear producto
 router.post('/products', createProduct);
-
 // Obtener productos
 router.get('/products', getProducts);
 router.get('/productsSHORT', getProductsSHORT);
-
 // Eliminar producto por ID
 router.delete('/products/:id', deleteProduct);
 
@@ -36,11 +31,9 @@ router.delete('/products/:id', deleteProduct);
 // ==========================
 // Crear transacción
 router.post('/transactions', createTransaction);
-
 // Obtener transacciones
 router.get('/transactions', getTransactions);
 router.get('/transactionsSHORT', getTransactionsSHORT);
-
 // Eliminar transacción por ID
 router.delete('/transactions/:id', deleteTransaction);
 

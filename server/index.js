@@ -9,6 +9,7 @@ import clientRoutes from  './routers/clients.js'
 import salesRoutes from  './routers/sales.js'
 import managementRoutes from  './routers/management.js'
 import generalRoutes from  './routers/general.js'
+import webhookRoutes from './routers/webhook.js'
 // import Product from './models/Product.js'
 // import ProductStat from './models/ProductStat.js'
 // import User from './models/User.js'
@@ -17,8 +18,10 @@ import generalRoutes from  './routers/general.js'
 // import AffiliateStat from "./models/AffiliateStat.js";
 // import { dataUser,dataProduct,dataProductStat,dataTransaction,dataOverallStat,dataAffiliateStat } from './data/index.js'
 
+dotenv.config({path:".env"})
+
 const app = express()
-app.use(morgan('common'))
+app.use(morgan('combined'))
 app.use(helmet())
 app.use(cors())
 
@@ -26,7 +29,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(helmet.crossOriginResourcePolicy({policy:"cross-origin"}))
 
-dotenv.config({path:".env"})
+
 const PORT = process.env.PORT || 9000
 
 app.get("/",(req,res)=>{
@@ -43,12 +46,13 @@ app.use("/client",clientRoutes)
 app.use("/general",generalRoutes)
 app.use("/management",managementRoutes)
 app.use("/sales",salesRoutes)
+app.use("/webhook", webhookRoutes)
 
 connectDB();
 
 app.listen(PORT,()=>{
     console.log(`server started on http://localhost:${PORT}`)
-    //Run this once
+    // Run this once
     // User.insertMany(dataUser)
     // Product.insertMany(dataProduct)
     // ProductStat.insertMany(dataProductStat)
