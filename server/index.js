@@ -10,6 +10,7 @@ import salesRoutes from  './routers/sales.js'
 import managementRoutes from  './routers/management.js'
 import generalRoutes from  './routers/general.js'
 import webhookRoutes from './routers/webhook.js'
+import orderRoutes from "./routers/order.js"
 // import Product from './models/Product.js'
 // import ProductStat from './models/ProductStat.js'
 // import User from './models/User.js'
@@ -47,6 +48,7 @@ app.use("/general",generalRoutes)
 app.use("/management",managementRoutes)
 app.use("/sales",salesRoutes)
 app.use("/webhook", webhookRoutes)
+app.use("/order", orderRoutes)
 
 connectDB();
 

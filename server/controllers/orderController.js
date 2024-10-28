@@ -136,7 +136,8 @@ export const updateOrder = async (req, res) => {
 export const getAllOrders = async (req, res) => {
     try {
         // Obtener todas las órdenes y poblar los detalles del usuario
-        const orders = await Order.find().populate('userId');
+        //const orders = await Order.find().populate('userId');
+        const orders = await Order.find({userId});
 
         if (orders.length === 0) {
             return res.status(404).json({ message: "No se encontraron órdenes" });

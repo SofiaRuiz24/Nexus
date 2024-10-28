@@ -42,6 +42,10 @@ export const api = createApi({
       }),
       providesTags: ['Transactions'],
     }),
+    getOrders: build.query({
+        query: () => 'order/',
+        providesTags: ['Customers'],
+    }),
     getGeography: build.query({
       query: () => 'client/geography',
       providesTags: ['Geography'],
@@ -76,4 +80,5 @@ export const {
   useGetAdminsQuery,
   useGetPerformanceQuery,
   useGetDashboardQuery,
+  useGetOrdersQuery,
 } = api;

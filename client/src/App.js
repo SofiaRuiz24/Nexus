@@ -18,6 +18,7 @@ import Admins from 'scenes/admins'
 import Performance from 'scenes/performance'
 import Auth from 'scenes/auth'
 import Register from "scenes/register"
+import Orders from 'scenes/orders'
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
               <Route path="/products" element={<Products/>}/>
               <Route path="/customers" element={<Customers/>}/>
               <Route path="/transactions" element={<Transactions/>}/>
+              <Route path="/orders" element={<Orders/>}/>
               <Route path="/geography" element={<Geography/>}/> 
               <Route path="/overview" element={<Overview/>}/>
               <Route path="/daily" element={<Daily/>}/>

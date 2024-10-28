@@ -55,6 +55,11 @@ const navItems =[
         icon:<ReceiptLongOutlined/>
     },
     {
+        text:"Ordenes",
+        redirection: "orders",
+        icon:<TrendingUpOutlined/>
+    },
+    {
         text:"Geografía",
         redirection: "geography",
         icon:<PublicOutlined/>

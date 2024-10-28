@@ -66,6 +66,37 @@ export const getProducts = async(req,res) =>{
     }
 }
 
+export const getProductByWhatsAppId = async (req, res) => {
+    try {
+        // Obtener el whatsappId de los parámetros de la solicitud
+        const { wp_id } = req.params;
+    
+        // Buscar el producto utilizando el whatsappId
+        const product = await Product.findOne({ wp_id });
+    
+        if (!product) {
+            return res.status(404).json({ message: "Producto no encontrado" });
+        }
+    
+        // Obtener las estadísticas del producto si es necesario
+        const stat = await ProductStat.find({
+            productId: product._id
+        });
+
+        // Devolver el producto con sus estadísticas
+        const productWithStats = {
+            ...product._doc,
+            stat
+        };
+    
+        return res.status(200).json(productWithStats);
+    } catch (error) {
+        console.error("Error al obtener el producto por WhatsApp ID:", error);
+        return res.status(500).json({ message: "Error al obtener el producto" });
+    }
+};
+
+
 // ==========================
 // Funciones de Usuarios
 // ==========================
