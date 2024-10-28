@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useTheme, Box, TextField, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetCustomersQuery } from "state/api";
@@ -22,15 +22,16 @@ const Customers = () => {
     role: "user",
   });
 
+  const [search, setSearch] = useState(""); // Estado para la búsqueda
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCustomer((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddCustomer = async() => {
-    console.log("Nuevo cliente:", newCustomer);
+  const handleAddCustomer = async () => {
     const response = await postCustomer(newCustomer);
-    if(response.status === 201){
+    if (response.status === 201) {
       setNewCustomer({
         name: "",
         password: "",
@@ -44,18 +45,14 @@ const Customers = () => {
       });
       refetch();
     } else {
-      throw new Error("Error al crear customer")
+      throw new Error("Error al crear customer");
     }
   };
 
-  const handleDeleteCustomer = async(id) => {
-    // Aquí puedes hacer una petición para eliminar al cliente del backend
+  const handleDeleteCustomer = async (id) => {
     const response = await deleteCustomer(id);
-
-    console.log(response)
-    if(response.status !== 200) throw new Error("Error al borrar customer")
-    // Después de eliminar, puedes volver a obtener la lista de clientes
-    refetch(); // Si tu query está configurado para volver a obtener datos
+    if (response.status !== 200) throw new Error("Error al borrar customer");
+    refetch();
   };
 
   const columns = [
@@ -82,15 +79,33 @@ const Customers = () => {
           color="error"
           onClick={() => handleDeleteCustomer(params.id)}
         >
-          <DeleteIcon/>
+          <DeleteIcon />
         </Button>
       ),
     },
   ];
 
+  // Filtrar los usuarios según el valor de búsqueda
+  const filteredData = useMemo(() => {
+    if (!data) return [];
+    return data.filter((customer) =>
+      customer.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [data, search]);
+
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="CLIENTES" subtitle="Lista de clientes" />
+
+      {/* Barra de búsqueda */}
+      <TextField
+        label="Buscar por nombre"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       {/* Formulario para agregar nuevo cliente */}
       <Box
@@ -176,17 +191,15 @@ const Customers = () => {
       </Box>
 
       {/* Tabla de clientes */}
-      <Box>
-        <Box
-          mt="40px"
-          height="75vh"
+      <Box mt="40px" height="75vh">
+        <DataGrid
+          loading={isLoading || !data}
+          getRowId={(row) => row._id}
+          rows={filteredData} // Mostrar los datos filtrados
+          columns={columns}
           sx={{
-            "& .MuiDataGrid-root": {
-              border: "none",
-            },
-            "& .MuiDataGrid-cell": {
-              borderBottom: "none",
-            },
+            "& .MuiDataGrid-root": { border: "none" },
+            "& .MuiDataGrid-cell": { borderBottom: "none" },
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: theme.palette.background.alt,
               color: theme.palette.secondary[100],
@@ -204,14 +217,7 @@ const Customers = () => {
               color: `${theme.palette.secondary[200]} !important`,
             },
           }}
-        >
-          <DataGrid
-            loading={isLoading || !data}
-            getRowId={(row) => row._id}
-            rows={data || []}
-            columns={columns}
-          />
-        </Box>
+        />
       </Box>
     </Box>
   );

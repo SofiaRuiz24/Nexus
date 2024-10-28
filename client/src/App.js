@@ -16,6 +16,8 @@ import Monthly from 'scenes/monthly'
 import Breakdown from 'scenes/breakdown'
 import Admins from 'scenes/admins'
 import Performance from 'scenes/performance'
+import Auth from 'scenes/auth'
+import Register from "scenes/register"
 
 function App() {
 
@@ -28,8 +30,10 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline/>
           <Routes>
+            <Route path="/auth" element={<Auth/>}/>
+            <Route path="/register" element={<Register/>}/>
             <Route element={<Layout/>}>
-              <Route path="/" element={<Navigate to="/dashboard"/>} replace/>
+              <Route path="/" element={<Navigate to="/auth"/>} replace/>
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/products" element={<Products/>}/>
               <Route path="/customers" element={<Customers/>}/>

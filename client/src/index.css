@@ -20,3 +20,57 @@ body,
 ::-webkit-scrollbar-track:hover{
     background: #21295c;
 }
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    h1 {
+       margin: 0; 
+    }
+
+    div {
+        border-radius: 8px;
+        padding: 1rem;
+        background-color: gray;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 30%;
+    }
+
+    input {
+        border-radius: 4px;
+        width: 75%;
+        height: 30px;
+        margin-top: 10px;
+    }  
+}
+
+.buttonAuth{
+    margin-top: 15px;
+    width: 50%;        
+    height: 30px;
+    border-radius: 20px;
+    border-width: 1px;
+    color: white;
+    background-color: #21295c;
+}
+
+.buttonRedirect{
+    margin-top: 15px;
+    width: 50%;        
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+.buttonRedirect:hover{
+    text-decoration: underline;
+}
