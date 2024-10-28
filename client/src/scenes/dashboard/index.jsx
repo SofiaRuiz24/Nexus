@@ -50,18 +50,6 @@ const Dashboard = () =>{
             <FlexBetween>
                 <Header title="Panel principal" subtitle="Bienvenido al panel de administración"/>
                 <Box>
-                    <Button
-                        sx={{
-                            backgroundColor:theme.palette.secondary.light,
-                            color:theme.palette.background.alt,
-                            fontSize:"14px",
-                            fontWeight:"bold",
-                            padding:"10px 20px"
-                        }}
-                    >
-                        <DownloadOutlined sx={{ mr: "10px" }} />
-                        Descargar presupuesto
-                    </Button>
                 </Box>
             </FlexBetween>
             <Box
