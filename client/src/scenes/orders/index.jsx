@@ -1,61 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme, Box, Typography, Fab, IconButton } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useGetCustomersQuery, useGetOrdersQuery, useGetProductsQuery } from "state/api";
+import { useGetOrdersQuery } from "state/api";
+import { updateOrder } from "lib/apiRequests";
 
 const Orders = () => {
   const theme = useTheme();
-  const { data: ordersData, isLoading: isOrdersLoading } = useGetOrdersQuery();
-  const { data: productsData, isLoading: isProductsLoading, error, refetch } = useGetProductsQuery();
-  const { data: customersData, isLoading: isCustomersLoading } = useGetCustomersQuery();
+  const { data: ordersData, isLoading: isOrdersLoading, refetch } = useGetOrdersQuery();
+  const [currentTicket, setCurrentTicket] = useState(0);
 
-  const [currentTicket, setCurrentTicket] = useState(0); // Estado del ticket actual
+  // Filtrar solo los tickets con status "nuevo"
+  const filteredTickets = ordersData?.filter((ticket) => ticket.status === "nuevo") || [];
 
-  // Cambiar al siguiente o al anterior ticket
+  // Ajustar el índice del ticket actual si la lista de tickets cambia
+  useEffect(() => {
+    if (currentTicket >= filteredTickets.length) {
+      setCurrentTicket(Math.max(0, filteredTickets.length - 1));
+    }
+  }, [filteredTickets, currentTicket]);
+
   const handleNextTicket = () => {
-    setCurrentTicket((prev) => (prev + 1) % ordersData.length);
+    setCurrentTicket((prev) => (prev + 1) % filteredTickets.length);
   };
 
   const handlePreviousTicket = () => {
-    setCurrentTicket((prev) => (prev - 1 + ordersData.length) % ordersData.length);
+    setCurrentTicket((prev) => (prev - 1 + filteredTickets.length) % filteredTickets.length);
   };
 
-  // Aceptar y rechazar ticket
-  const handleAccept = () => {
-    console.log(`Ticket ${currentTicket + 1} aceptado`);
-    handleNextTicket();
+  const handleUpdate = async (_id, status) => {
+    const response = await updateOrder(_id, status);
+    if (response.status !== 200) {
+      alert("Error completando órden, por favor intente nuevamente");
+    } else {
+      status.status === "completado"
+        ? alert("Órden completada correctamente")
+        : alert("Órden cancelada correctamente");
+      await refetch();
+      setCurrentTicket(0);
+    }
   };
 
-  const handleReject = () => {
-    console.log(`Ticket ${currentTicket + 1} rechazado`);
-    handleNextTicket();
-  };
+  if (isOrdersLoading) return <p>Cargando...</p>;
+  if (filteredTickets.length === 0) return <p>No hay tickets nuevos.</p>;
 
-  if (isOrdersLoading || !ordersData) return <p>Cargando...</p>;
-
-  const ticket = ordersData[currentTicket];
-  console.log(ticket.userId)
+  const ticket = filteredTickets[currentTicket];
   const products = ticket.products || [];
-  const totalPrice = products.reduce(
-    (sum, product) => sum + product.quantity * product.price,
-    0
-  );
-
-  //Función para obtener el nombre del usuario según el userId
-  const getUserNameById = (userId) => {
-    if(isCustomersLoading) return
-    const user = customersData.find(customer => userId === customer._id);
-    return user ? user.name : `Usuario ${currentTicket + 1}`;
-  };
-
-  const getProductNameById = async (product_id) => {
-    console.log(product_id)
-    const product = await productsData.find(product => product.wp_id === product_id)
-    return product
-  }
+  const totalPrice = products.reduce((sum, product) => sum + product.quantity * product.price, 0);
 
   return (
     <Box
@@ -77,14 +70,14 @@ const Orders = () => {
         borderRadius="8px"
         mb={2}
       >
-        <Typography variant="h6">Usuario: {getUserNameById(ticket.userId)}</Typography> {/* Muestra el nombre del usuario aquí */}
+        <Typography variant="h6">Usuario: {ticket.userName}</Typography>
 
         <Box mt={2}>
           <Typography variant="subtitle1">Productos:</Typography>
           {products.length > 0 ? (
             products.map((product, index) => (
               <Box key={index} display="flex" justifyContent="space-between">
-                <Typography>{}</Typography> {/* Muestra el nombre del usuario de cada producto */}
+                <Typography>{product.name}</Typography>
                 <Typography>
                   {product.quantity} x ${product.price}
                 </Typography>
@@ -101,7 +94,6 @@ const Orders = () => {
         </Box>
       </Box>
 
-      {/* Flechas laterales para navegar */}
       <IconButton
         onClick={handlePreviousTicket}
         sx={{ position: "absolute", top: "50%", left: 16 }}
@@ -116,7 +108,6 @@ const Orders = () => {
         <ArrowForwardIosIcon />
       </IconButton>
 
-      {/* Botones flotantes para aceptar y rechazar */}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -125,10 +116,10 @@ const Orders = () => {
         bottom={16}
         px={8}
       >
-        <Fab color="error" onClick={handleReject}>
+        <Fab color="error" onClick={() => handleUpdate(ticket._id, { status: "cancelado" })}>
           <CloseIcon />
         </Fab>
-        <Fab color="success" onClick={handleAccept}>
+        <Fab color="success" onClick={() => handleUpdate(ticket._id, { status: "completado" })}>
           <CheckIcon />
         </Fab>
       </Box>

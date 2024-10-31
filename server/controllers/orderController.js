@@ -135,8 +135,64 @@ export const updateOrder = async (req, res) => {
 // Obtener todas las órdenes
 export const getAllOrders = async (req, res) => {
     try {
-        // Obtener todas las órdenes y poblar el campo userId con los datos del usuario
-        const orders = await Order.find({}).populate('userId');
+        const orders = await Order.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userDetails'
+                }
+            },
+            {
+                $unwind: '$userDetails'
+            },
+            {
+                $addFields: {
+                    userName: '$userDetails.name'
+                }
+            },
+            {
+                $project: {
+                    userDetails: 0 // Excluye el campo userDetails después de extraer el nombre
+                }
+            },
+            {
+                $unwind: {
+                    path: "$products",
+                    preserveNullAndEmptyArrays: true // Preserva órdenes sin productos si las hay
+                }
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'products.productId',
+                    foreignField: 'wp_id',
+                    as: 'productDetails'
+                }
+            },
+            {
+                $unwind: {
+                    path: "$productDetails",
+                    preserveNullAndEmptyArrays: true // Maneja productos que podrían no tener detalles
+                }
+            },
+            {
+                $addFields: {
+                    'products.name': '$productDetails.name'
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id',
+                    userId: { $first: '$userId' },
+                    userName: { $first: '$userName' },
+                    status: { $first: '$status' },
+                    createdAt: { $first: '$createdAt' },
+                    products: { $push: '$products' }
+                }
+            }
+        ]);
 
         if (orders.length === 0) {
             return res.status(404).json({ message: "No se encontraron órdenes" });

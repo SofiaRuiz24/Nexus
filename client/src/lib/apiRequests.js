@@ -138,3 +138,28 @@ export async function deleteTransaction(transaction_id) {
     return{status: 500}
   }
 }
+
+export async function updateOrder(order_id, updateObject) {
+  console.log(order_id);
+  console.log(updateObject);
+  try {
+    const stringedObject = JSON.stringify(updateObject);
+    const response = await fetch(`http://localhost:5000/order/${order_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: stringedObject
+    });
+
+    if (!response.ok) {
+      return { status: 500 };
+    }
+
+    const data = await response.json(); 
+    return { data, status: 200 };
+  } catch (e) {
+    console.error("Error al borrar la transacción:", e);
+    return { status: 500 };
+  }
+}
