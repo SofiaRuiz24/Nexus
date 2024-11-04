@@ -55,10 +55,10 @@ export const handleOrderCompletion = async (orderId) => {
             }
 
             // Crear el mensaje profesional para el estado completado
-            const message = `Estimado/a ${user.name}, su pedido ha sido completado con éxito. Gracias por confiar en nosotros. Si tiene alguna consulta, no dude en ponerse en contacto con nosotros. ¡Que tenga un excelente día!`;
+            const message = `Estimado/a ${user.name}, su pedido ha sido confirmado con éxito. Gracias por confiar en nosotros.Ya puede pasar a retirarlo por nuestro local. Si tiene alguna consulta, no dude en ponerse en contacto con nosotros. ¡Que tenga un excelente día!`;
 
             // Enviar el mensaje usando el servicio
-            await sendCompletionMessage(user.phoneNumber, message);
+            await  sendMessage(user.phoneNumber, message);
 
             console.log('Mensaje de completado enviado a:', user.phoneNumber);
         }
